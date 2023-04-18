@@ -1,0 +1,152 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Detail Page</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Sono:wght@200;300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'App_Folder_CSS/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'App_Folder_CSS/bootstrap-icons.css' %}">
+
+    <link rel="stylesheet" href="{% static 'App_Folder_CSS/owl.carousel.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'App_Folder_CSS/owl.theme.default.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'App_Folder_CSS/templatemo-pod-talk.css' %}">]
+    
+</head>
+
+<body>
+
+    <main>
+        <header class="site-header d-flex flex-column justify-content-center align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-12 text-center">
+                        <h2 class="mb-0">Detail Page</h2>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!--店舗詳細-->
+        {% if Ddata %}
+        {% for shop in Ddata %}
+        <section class="latest-podcast-section section-padding pb-0" id="section_2">
+            <div class="container">
+                <div class="row justify-content-center">
+
+                    <div class="col-lg-10 col-12">
+                        <div class="section-title-wrap mb-5">
+                            <h4 class="section-title">{{ shop.genre.name }}</h4>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-3 col-12">
+                                <div class="custom-block-icon-wrap">
+                                    <div class="custom-block-image-wrap custom-block-image-detail-page">
+                                        <!--店舗画像-->
+                                        <img src="{{ shop.photo.pc.l }}"
+                                            class="custom-block-image img-fluid" alt="">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-9 col-12">
+                                <div class="custom-block-info">
+
+                                    <h2 class="mb-2">{{ shop.name }}</h2>
+
+                                    <h5 class="mb-3">{{ shop.genre.catch }}</h5>
+
+                                    <p>住所：{{ shop.address }}</p>
+
+                                    <p>営業時間：{{ shop.open }}</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row  mt-5">
+                        <div class="cols-lg">
+                        <iframe id='map'
+                            src='https://www.google.com/maps/embed/v1/place?key={{ GoogleMapApiKey }}&amp;q={{ shop.address }}'
+                            width='100%'
+                            height='320px'
+                            frameborder='0'
+                            class="custom-block-icon-wrap">
+                        </iframe>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        {% endfor %}
+        {% endif %}
+        
+
+        
+    </main>
+
+
+    <!--footer-->   
+    <footer class="site-footer">
+      <div class="container">
+          <div class="row ">
+
+              <div class="col-lg-6 col-md-6 col-12 mb-4 text-center">
+                  <h6 class="site-footer-title mb-3">Contact</h6>
+
+                  <p class="mb-2"><strong class="d-inline me-2">Phone:</strong> 090-8294-7496</p>
+
+                  <p>
+                      <strong class="d-inline me-2">Email:</strong>
+                      <a href="mailto:s202065@nishitech.ac.jp">
+                        s202065@nishitech.ac.jp</a>
+                  </p>
+              </div>
+
+              <div class="col-lg-6 col-md-6 col-12 text-center">
+
+                  <h6 class="site-footer-title mb-3">Social</h6>
+
+                  <ul class="social-icon">
+                      <li class="social-icon-item">
+                          <a href="https://github.com/sorandada">
+                              <img src="{% static 'images/github-mark-white.png' %}" class="social-icon-link" alt="">
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+
+          </div>
+      </div>
+
+  </footer>
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/custom.js"></script>
+
+</body>
+
+</html>

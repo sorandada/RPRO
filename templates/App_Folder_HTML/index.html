@@ -1,0 +1,226 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Main Page</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&family=Sono:wght@200;300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'App_Folder_CSS/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'App_Folder_CSS/bootstrap-icons.css' %}">
+
+    <link rel="stylesheet" href="{% static 'App_Folder_CSS/owl.carousel.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'App_Folder_CSS/owl.theme.default.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'App_Folder_CSS/templatemo-pod-talk.css' %}">
+
+    <!--Geolocation API を使用し緯度・経度取得-->
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            document.getElementById('lat').value = position.coords.latitude;
+            document.getElementById('lon').value = position.coords.longitude;
+            document.getElementById('search-form').submit();
+        }
+    </script>
+</head>
+
+<body>
+
+    <main>
+        <header class="site-header d-flex flex-column justify-content-center align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-12">
+                        <div class="text-center mb-5 pb-2">
+                            <h1 class="text-white">Grunavi</h1>
+                            <p class="text-white mb-5">周辺のグルメを発見しよう！</p>
+                            <div class="col-lg-12 col-12">
+                                <div class="">
+                                    <form id="search-form" method="get">
+                                        
+                                        <h4 class="text-white custom-block-info">範囲指定</h4>
+                                        
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" name="range" id="inlineRadio1" value="1">
+                                            <label for="inlineRadio1" class="form-check-label">
+                                                300m
+                                            </label>
+                                        </div>
+
+                                        
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" name="range" id="inlineRadio2" value="2">
+                                            <label for="inlineRadio2" class="form-check-label">
+                                                500m
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" name="range" id="inlineRadio3" value="3">
+                                            <label for="inlineRadio3" class="form-check-label">
+                                                1km
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" name="range" id="inlineRadio4" value="4">
+                                            <label for="inlineRadio4" class="form-check-label">
+                                                2km
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" class="form-check-input" name="range" id="inlineRadio5" value="5">
+                                            <label for="inlineRadio5" class="form-check-label">
+                                                3km
+                                            </label>
+                                        </div>
+
+
+                                        <!--ボタンを押すと、位置情報取得-->
+                                        <div class="col-lg-12 col-12">
+                                            <button class="btn custom-btn smoothscroll mt-3 col-lg-3" type="button" onclick="getLocation()">
+                                                <h6 class="text-white">Search</h6>
+                                            </button>
+                                        </div>
+
+                                        <input type="hidden" name="lat" id="lat">
+                                        <input type="hidden" name="lon" id="lon">
+                                    </form>        
+                                </div>                        
+                            </div>        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!--店舗紹介-->   
+        <section class="trending-podcast-section section-padding">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-12 col-12">
+
+                        {% if data %}
+                        <div class="section-title-wrap mb-5">
+                            <h4 class="section-title">店舗一覧</h4>
+
+                            <h4 class="section-title">{{shop_num.results_available}}件</h4>
+                            
+                            <h4 class="section-title">{{ range_m }}内</h4>
+                        </div>
+                        {% endif %}
+
+                        {% if not data %}
+                        <div class="text-center mb-1 pb-3">
+                            <h4 class="section-title shadow ">Grunaviへようこそ</h4>
+                            <h5 class="section-padding shadow mb-5">Grunaviは現在地周辺のグルメ・レストランを検索できるWebアプリケーションです。</h5>
+                            <h4 class="section-title shadow">使用方法</h4>
+                            <h5 class="section-padding shadow">１：範囲指定<br><br>２：検索(Search)</h5>
+
+                        </div>
+
+                        {% endif %}
+                    </div>
+                    
+                    <!--店舗-->
+                    {% if data %}
+                    {% for shop in data %}
+                    <div class="col-lg-4 col-12 mb-4">
+                        <div class="custom-block custom-block-full">
+                            <div class="custom-block-image-wrap">
+                                <a href="{% url 'shop_detail' shop.id %}">
+                                    <img src="{{ shop.photo.pc.l }}" class="custom-block-image img-fluid"
+                                        alt="">
+                                </a>
+                            </div>
+
+                            <div class="custom-block-info">
+                                <h5 class="mb-2">
+                                    <a href="{% url 'shop_detail' shop.id %}">
+                                        {{ shop.name }}
+                                    </a>
+                                </h5>
+
+                                <p class="mb-1">{{ shop.mobile_access }}</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!--footer-->   
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row ">
+
+                <div class="col-lg-6 col-md-6 col-12 mb-4 text-center">
+                    <h6 class="site-footer-title mb-3">Contact</h6>
+
+                    <p class="mb-2"><strong class="d-inline me-2">Phone:</strong> 090-8294-7496</p>
+
+                    <p>
+                        <strong class="d-inline me-2">Email:</strong>
+                        <a href="mailto:s202065@nishitech.ac.jp">s202065@nishitech.ac.jp</a>
+                    </p>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-12 text-center">
+
+                    <h6 class="site-footer-title mb-3">Social</h6>
+
+                    <ul class="social-icon">
+                        <li class="social-icon-item">
+                            <a href="https://github.com/sorandada">
+                                <img src="{% static 'images/github-mark-white.png' %}" class="social-icon-link" alt="">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+
+</body>
+
+</html>
