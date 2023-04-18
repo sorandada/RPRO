@@ -10,8 +10,7 @@
 # 開発環境
 ## 開発環境
 - Windows 11 Home
-- Visual Studio 
-- Code 1.77.3
+- Visual Studio Code 1.77.3
 - Ubuntu 20.04
 
 ## 開発言語
